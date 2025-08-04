@@ -1,22 +1,22 @@
 # Stage 1: Build the Spring Boot application
-FROM openjdk:15-jdk-slim AS build
+# Mudança AQUI: Usaremos 'openjdk:15-jdk-bullseye' ou apenas 'openjdk:15'
+# 'bullseye' é Debian 11, ainda com suporte.
+FROM openjdk:15-jdk-bullseye AS build # Ou apenas FROM openjdk:15 AS build
 
 # Define o diretório de trabalho antes de tudo para consistência
 WORKDIR /app
 
 # Instalar Maven
-# Definimos as variáveis ARG e ENV aqui. ENV define variáveis de ambiente persistentes.
 ARG MAVEN_VERSION=3.9.6
-# Usando a URL de arquivo para maior estabilidade
 ARG BASE_URL=https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries
 ENV MAVEN_HOME /usr/local/maven
 ENV PATH $MAVEN_HOME/bin:$PATH
 
 # Instala ferramentas necessárias (wget, ca-certificates) e baixa/extrai o Maven
+# Não precisamos mudar nada aqui, pois o apt-get funcionará na nova base Debian
 RUN apt-get update && \
     apt-get install -y --no-install-recommends wget ca-certificates && \
     wget -q ${BASE_URL}/apache-maven-${MAVEN_VERSION}-bin.tar.gz -O /tmp/apache-maven.tar.gz && \
-    # CORREÇÃO AQUI: "/tmp/apache-maven.tar.gz" em vez de "/tmp/apache/maven.tar.gz"
     tar -xzf /tmp/apache-maven.tar.gz -C /usr/local && \
     mv /usr/local/apache-maven-${MAVEN_VERSION} ${MAVEN_HOME} && \
     rm /tmp/apache-maven.tar.gz && \
@@ -38,7 +38,8 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Stage 2: Cria a imagem final leve para execução
-FROM openjdk:15-jdk-slim
+# Também usaremos 'openjdk:15-jdk-bullseye' aqui para consistência e suporte
+FROM openjdk:15-jdk-bullseye
 
 # Expõe a porta padrão que sua aplicação Spring Boot escuta
 EXPOSE 8080
