@@ -1,7 +1,6 @@
 # Stage 1: Build the Spring Boot application
-# Mudança AQUI: Usaremos 'openjdk:15-jdk-bullseye' ou apenas 'openjdk:15'
-# 'bullseye' é Debian 11, ainda com suporte.
-FROM openjdk:15-jdk-bullseye AS build # Ou apenas FROM openjdk:15 AS build
+# Usamos 'openjdk:15-jdk-bullseye' que é baseado em Debian 11 (Bullseye) e tem suporte ativo.
+FROM openjdk:15-jdk-bullseye AS build
 
 # Define o diretório de trabalho antes de tudo para consistência
 WORKDIR /app
@@ -13,7 +12,6 @@ ENV MAVEN_HOME /usr/local/maven
 ENV PATH $MAVEN_HOME/bin:$PATH
 
 # Instala ferramentas necessárias (wget, ca-certificates) e baixa/extrai o Maven
-# Não precisamos mudar nada aqui, pois o apt-get funcionará na nova base Debian
 RUN apt-get update && \
     apt-get install -y --no-install-recommends wget ca-certificates && \
     wget -q ${BASE_URL}/apache-maven-${MAVEN_VERSION}-bin.tar.gz -O /tmp/apache-maven.tar.gz && \
@@ -38,7 +36,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Stage 2: Cria a imagem final leve para execução
-# Também usaremos 'openjdk:15-jdk-bullseye' aqui para consistência e suporte
+# Usaremos 'openjdk:15-jdk-bullseye' para consistência e suporte no runtime
 FROM openjdk:15-jdk-bullseye
 
 # Expõe a porta padrão que sua aplicação Spring Boot escuta
