@@ -1,6 +1,6 @@
 # Stage 1: Build the Spring Boot application
-# Usamos 'openjdk:15-jdk-bullseye' que é baseado em Debian 11 (Bullseye) e tem suporte ativo.
-FROM openjdk:15-jdk-bullseye AS build
+# Usaremos 'openjdk:15-slim-bullseye' que é a tag mais provável para OpenJDK 15 e Debian Bullseye.
+FROM openjdk:15-slim-bullseye AS build
 
 # Define o diretório de trabalho antes de tudo para consistência
 WORKDIR /app
@@ -36,8 +36,8 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Stage 2: Cria a imagem final leve para execução
-# Usaremos 'openjdk:15-jdk-bullseye' para consistência e suporte no runtime
-FROM openjdk:15-jdk-bullseye
+# Usaremos a mesma tag para consistência: 'openjdk:15-slim-bullseye'
+FROM openjdk:15-slim-bullseye
 
 # Expõe a porta padrão que sua aplicação Spring Boot escuta
 EXPOSE 8080
