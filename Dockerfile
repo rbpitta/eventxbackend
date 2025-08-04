@@ -1,6 +1,6 @@
 # Stage 1: Build the Spring Boot application
 # Usamos uma imagem Maven com JDK 15
-FROM maven:3.8.7-jdk-15 AS build
+FROM openjdk:15-jdk-slim AS build
 
 # Define o diretório de trabalho dentro do contêiner
 WORKDIR /app
