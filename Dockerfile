@@ -7,7 +7,8 @@ WORKDIR /app
 # Instalar Maven
 # Definimos as variáveis ARG e ENV aqui. ENV define variáveis de ambiente persistentes.
 ARG MAVEN_VERSION=3.9.6
-ARG BASE_URL=https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries # URL mais estável
+# Usando a URL de arquivo para maior estabilidade
+ARG BASE_URL=https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries
 ENV MAVEN_HOME /usr/local/maven
 ENV PATH $MAVEN_HOME/bin:$PATH
 
@@ -15,7 +16,8 @@ ENV PATH $MAVEN_HOME/bin:$PATH
 RUN apt-get update && \
     apt-get install -y --no-install-recommends wget ca-certificates && \
     wget -q ${BASE_URL}/apache-maven-${MAVEN_VERSION}-bin.tar.gz -O /tmp/apache-maven.tar.gz && \
-    tar -xzf /tmp/apache/maven.tar.gz -C /usr/local && \
+    # CORREÇÃO AQUI: "/tmp/apache-maven.tar.gz" em vez de "/tmp/apache/maven.tar.gz"
+    tar -xzf /tmp/apache-maven.tar.gz -C /usr/local && \
     mv /usr/local/apache-maven-${MAVEN_VERSION} ${MAVEN_HOME} && \
     rm /tmp/apache-maven.tar.gz && \
     apt-get purge -y --auto-remove wget ca-certificates && \
