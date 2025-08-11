@@ -1,13 +1,15 @@
-package com.example.demo;
+package com.events.eventxx;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
-public class DemoApplication {
+@EnableAsync
+public class EventxxApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+		SpringApplication.run(EventxxApplication.class, args);
 	}
 
 }
