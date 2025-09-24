@@ -81,6 +81,17 @@
 			<version>2.0.1</version>
 		</dependency>
 
+<dependencies>
+  <!-- outras dependências -->
+
+  <!-- MariaDB JDBC driver -->
+  <dependency>
+    <groupId>org.mariadb.jdbc</groupId>
+    <artifactId>mariadb-java-client</artifactId>
+    <!-- sem <version>; deixe o Spring Boot BOM gerenciar -->
+    <scope>runtime</scope> <!-- importante: runtime, não provided -->
+  </dependency>
+</dependencies>
 
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
