@@ -9,6 +9,16 @@ public class EventDto {
 	private String category;
 	private Date dateEvent;
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	private String password;
+
 	public Integer getCodEvent() {
 		return codEvent;
 	}

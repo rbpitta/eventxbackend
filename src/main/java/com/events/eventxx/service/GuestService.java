@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,7 +23,7 @@ public class GuestService {
 
 	private final String status_guest = "ausente";
 
-	public void saveGuest(Map<String, List<CompanionDTO>> mapGuest, Event event) throws Exception {
+	public void saveGuest(Map<String, List<CompanionDTO>> mapGuest, Event event, Pageable page) throws Exception {
 		for (Map.Entry<String, List<CompanionDTO>> entry : mapGuest.entrySet()) {
 			String guestName = entry.getKey();
 			List<CompanionDTO> list = entry.getValue();
@@ -48,7 +49,7 @@ public class GuestService {
 			guestRepository.save(guest);
 
 		}
-		eventService.processQrCodeAsync(event.getCodEvent());
+		eventService.processQrCodeAsync(event.getCodEvent(),page);
 
 
 	}

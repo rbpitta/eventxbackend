@@ -19,6 +19,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -44,8 +45,7 @@ public class FileController {
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 
     @PostMapping("/upload/{codEvent}")
-    public ResponseEntity processFileExcel(@RequestParam("file") MultipartFile file,
-        @PathVariable String codEvent) {
+    public ResponseEntity processFileExcel(@RequestParam("file") MultipartFile file, @PathVariable String codEvent, Pageable pageable) {
 
         Event event = eventRepository.findByCodEvent(codEvent);
 
@@ -69,7 +69,7 @@ public class FileController {
                 processLine(line, mapGuest);
             }
 
-            guestService.saveGuest(mapGuest, event);
+            guestService.saveGuest(mapGuest, event, pageable);
 
             logger.info("Arquivo processado com sucesso. Total de convidados: {}", mapGuest.size());
 
@@ -87,7 +87,7 @@ public class FileController {
         Cell companionCell = line.getCell(7); // Acompanhantes
         Cell emailCell = line.getCell(10); // E-mails
 
-        if (nameCell == null || emailCell == null) return;
+        if (nameCell == null) return;
         if (nameCell.getStringCellValue().trim().isEmpty() || emailCell.getStringCellValue().trim().isEmpty()) return;
 
 
@@ -115,18 +115,5 @@ public class FileController {
     private String[] splitData(String valor) {
         return valor.split("\\s*,\\s*");
     }
-
-
-    //FALTA SETAR AS INFORMAÇÕES PARA QUANDO OCORRER FALHAS
-    //FORMATAR MSG EMAIL
-    //VER AS THREADS
-    //LER QR CODE E DAR BAIXA NA TABELA--*
-
-
-    //ABRIR QR CODE EM UM MODAL--* não precisa pois a propia app não vai ler ela mesmo é só add uma nova pessoa
-
-
-    //FORMATAR AS TELAS- ARRUMAR MODAIS, COLOCAR CONTAINER, FOOTER E HEADER E FOTO
-    //ARRUMAR AS URLS DA SERVICE
 }
 

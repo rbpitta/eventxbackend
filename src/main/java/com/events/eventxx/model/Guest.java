@@ -8,8 +8,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -23,12 +25,24 @@ public class Guest {
     private String codQrcode;
     private String statusEnvio;
     private boolean statusAccess;
+
+    public String getMsgError() {
+        return msgError;
+    }
+
+    public void setMsgError(String msgError) {
+        this.msgError = msgError;
+    }
+
+    private String msgError;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "guest_id",referencedColumnName ="id")
     private List<Companion> companionList = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "idEvent", referencedColumnName = "id")
     private Event event;
+    @UpdateTimestamp
+    private Date updatedAt;
 
     public String getStatusEnvio() {
         return statusEnvio;
@@ -101,5 +115,15 @@ public class Guest {
     public void setCodQrcode(String codQrcode) {
         this.codQrcode = codQrcode;
     }
+
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
 
 }

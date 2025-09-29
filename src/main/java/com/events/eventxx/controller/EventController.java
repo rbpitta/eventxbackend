@@ -1,9 +1,9 @@
 package com.events.eventxx.controller;
 
+import com.events.eventxx.Dto.NewEventDto;
 import com.events.eventxx.model.Event;
 import com.events.eventxx.model.EventDto;
 import com.events.eventxx.repository.EventRepository;
-import com.events.eventxx.service.EmailService;
 import com.events.eventxx.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,23 +26,28 @@ public class EventController {
     @Autowired
     EventRepository eventRepository;
 
-
     @PostMapping("/event")
-    public void newEvent(@RequestBody EventDto eventDto) throws Exception {
+    public ResponseEntity newEvent(@RequestBody EventDto eventDto) throws Exception {
+        if (!eventDto.getPassword().equals("2606")) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
         try {
             eventService.saveEvent(eventDto);
+            return ResponseEntity.status(HttpStatus.OK).build();
         } catch (Exception ex) {
-           throw new Exception("error", ex);
+            throw new Exception("error", ex);
         }
+
     }
 
     @GetMapping("/event")
-    public ResponseEntity<String> getEvent(@RequestParam String id) {
+    public ResponseEntity<NewEventDto> getEvent(@RequestParam String id) {
         try {
+            NewEventDto eventDto = new NewEventDto();
             Event event = eventRepository.findByCodEvent(id);
-
             if (event != null) {
-                return ResponseEntity.ok(event.getCodEvent());
+                eventDto.setCodeEvento(event.getCodEvent());
+                return ResponseEntity.ok(eventDto);
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
             }
@@ -53,16 +58,5 @@ public class EventController {
         }
     }
 }
-
-//TODO EMAIL, RANDON COD EVENTO, 
-    //salvar convidado---ok
-    //novo evento--- falta o email
-    //novo acompanhante--ok
-    //coluna status na tabela acompanhante e convidado--ok
-    //metodo salvar presença convidado e acompanhante--ok
-    //arrumar as exeception
-    //validar quando o email não for encontrado
-//ajustar select na tabela de evento para trazer só acompanhante sem repetir o nome --- tira o nome repitido
-//no nome e manuscrito //ficará só o qr code
 
 

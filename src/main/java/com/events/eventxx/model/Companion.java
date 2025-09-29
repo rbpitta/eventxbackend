@@ -2,6 +2,9 @@ package com.events.eventxx.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.util.Date;
 
 @Entity
 public class Companion {
@@ -14,10 +17,22 @@ public class Companion {
     private String codQrcode;
     private String statusEnvio;
     private boolean statusAccess;
+    private String msgError;
     @ManyToOne
     @JoinColumn(name = "guest_id", referencedColumnName = "id")
     @JsonIgnoreProperties("companionList")
     private Guest guest;
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    @UpdateTimestamp
+    private Date updatedAt;
 
     public Guest getGuest() {
         return guest;
@@ -27,7 +42,7 @@ public class Companion {
         this.guest = guest;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -85,6 +100,13 @@ public class Companion {
 
     public void setPresent(String present) {
         this.present = present;
+    }
+    public String getMsgError() {
+        return msgError;
+    }
+
+    public void setMsgError(String msgError) {
+        this.msgError = msgError;
     }
 
 }
