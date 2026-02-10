@@ -35,6 +35,7 @@ public class ReportGuestService {
         headerRow.createCell(3).setCellValue("Acompanhantes");
         headerRow.createCell(4).setCellValue("Presença dos Acompanhantes");
         headerRow.createCell(5).setCellValue("Data de Atualização dos Acompanhantes");
+        headerRow.createCell(5).setCellValue("titulo");
 
         // Busca todos os convidados
         Page<Guest> guests = guestRepository.findByEvent_CodEvent(codEvent, pageable);

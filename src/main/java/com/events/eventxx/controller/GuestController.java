@@ -38,10 +38,14 @@ public class GuestController {
     ReportGuestService reportGuestService;
 
     @GetMapping()
-    public ResponseEntity<Page<Guest>> getGuestsByEventId(@RequestParam String id, Pageable pageable) {
+    public ResponseEntity<Page<Guest>> getGuestsByEventId(@RequestParam String id, Pageable pageable, String name) {
         Event event = eventRepository.findByCodEvent(id);
         if (event == null) {
             return ResponseEntity.notFound().build();
+        }
+        if(name != null) {
+            Page<Guest> pageGuest = guestRepository.findByEvent_CodEventAndNomeContainingIgnoreCase(id, pageable, name);
+            return ResponseEntity.ok(pageGuest);
         }
         Page<Guest> pageGuest = guestRepository.findByEvent_CodEvent(id, pageable);
         return ResponseEntity.ok(pageGuest);
@@ -135,6 +139,16 @@ public class GuestController {
         guestRepository.save(getGuest.get());
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/present")
+    public void editGuest(@RequestParam Integer idGuest, @RequestParam String present) {
+        Optional<Guest> guest = guestRepository.findById(idGuest);
+        if(guest.isPresent()){
+            guest.get().setPresent(present);
+            guestRepository.save(guest.get());
+        }
+    }
+
 
     public void sendQrcode(Guest guest, Event event) {
         eventService.sendQrCode(guest, event);

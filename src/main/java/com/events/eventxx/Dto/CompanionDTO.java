@@ -4,9 +4,20 @@ public class CompanionDTO {
 	private String nome;
 	private String email;
 
-	public CompanionDTO(String nome, String email) {
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	private String title;
+
+	public CompanionDTO(String nome, String email, String title) {
 		this.nome = nome;
 		this.email = email;
+		this.title = title;
 	}
 
 	public String getNome() {

@@ -42,6 +42,7 @@ public class GuestService {
 					companion.setEmail(dto.getEmail());
 					companion.setPresent(status_guest);
 					companion.setGuest(guest);
+					companion.setTitle(dto.getTitle());
 					return companion;
 				}).collect(Collectors.toList());
 

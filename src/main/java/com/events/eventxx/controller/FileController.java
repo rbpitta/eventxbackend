@@ -83,29 +83,29 @@ public class FileController {
     }
 
     private void processLine(Row line, Map<String, List<CompanionDTO>> mapGuest) {
+        List<CompanionDTO> companionList = new ArrayList<>();
         Cell nameCell = line.getCell(8); // Convidado principal
         Cell companionCell = line.getCell(7); // Acompanhantes
         Cell emailCell = line.getCell(10); // E-mails
+        Cell title = line.getCell(5); // título
 
         if (nameCell == null) return;
         if (nameCell.getStringCellValue().trim().isEmpty() || emailCell.getStringCellValue().trim().isEmpty()) return;
 
-
         String guestName = nameCell.getStringCellValue().trim();
+        String titleValue = title != null ? title.getStringCellValue().trim() : "";
         String[] companionNames = companionCell != null ? splitData(companionCell.getStringCellValue()) : new String[0];
         String[] emails = splitData(emailCell.getStringCellValue());
 
-        List<CompanionDTO> companionList = new ArrayList<>();
-
         // Convidado principal
         String guestEmail = emails.length > 0 ? emails[0].trim() : "";
-        companionList.add(new CompanionDTO("", guestEmail)); // "" = nome do convidado já está como chave
+        companionList.add(new CompanionDTO("", guestEmail,"")); // "" = nome do convidado já está como chave
 
         // Acompanhantes
         for (int i = 0; i < companionNames.length; i++) {
             String name = companionNames[i].trim();
             String email = (i + 1) < emails.length ? emails[i + 1].trim() : "";
-            companionList.add(new CompanionDTO(name, email));
+            companionList.add(new CompanionDTO(name, email, titleValue));
         }
 
         mapGuest.put(guestName, companionList);

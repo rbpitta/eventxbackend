@@ -25,7 +25,6 @@ public class Guest {
     private String codQrcode;
     private String statusEnvio;
     private boolean statusAccess;
-
     public String getMsgError() {
         return msgError;
     }

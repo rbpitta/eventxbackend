@@ -18,6 +18,16 @@ public class Companion {
     private String statusEnvio;
     private boolean statusAccess;
     private String msgError;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    private String title;
     @ManyToOne
     @JoinColumn(name = "guest_id", referencedColumnName = "id")
     @JsonIgnoreProperties("companionList")

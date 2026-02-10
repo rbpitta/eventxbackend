@@ -12,11 +12,14 @@ import java.util.Optional;
 
 public interface GuestRepository extends JpaRepository<Guest, Integer> {
     Page<Guest> findByEvent_CodEvent(String codEvent, Pageable pageable);
+    Page<Guest> findByEvent_CodEventAndNomeContainingIgnoreCase(String codEvent, Pageable pageable, String name);
 
     Optional<Guest> findBycodQrcode(String cod);
     int countByPresent(String present);
     @Query("SELECT COUNT(g) FROM Guest g WHERE g.event.codEvent = :codEvent AND g.present = 'presente'")
     int countGuestsByEventAndPresence(@Param("codEvent") String codEvent);
+
+
 
 
 }

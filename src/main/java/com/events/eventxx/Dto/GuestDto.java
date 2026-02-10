@@ -1,8 +1,7 @@
 package com.events.eventxx.Dto;
 
 import com.events.eventxx.model.Companion;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.OneToMany;
+
 import java.util.ArrayList;
 import java.util.List;
 
